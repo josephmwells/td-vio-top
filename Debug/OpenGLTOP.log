@@ -1,0 +1,13 @@
+﻿  glew.c
+  glewinfo.c
+C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\GL\glewinfo.c(13652,28): warning C4133: '=': incompatible types - from 'char [5]' to 'LPCWSTR'
+C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\GL\glewinfo.c(13656,1): warning C4133: 'function': incompatible types - from 'char [5]' to 'LPCWSTR'
+C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\GL\glewinfo.c(13724,25): warning C4133: 'function': incompatible types - from 'char [5]' to 'LPCWSTR'
+  Generating Code...
+  Matrix.cpp
+  VioTOP.cpp
+  Program.cpp
+  Shape.cpp
+  Generating Code...
+     Creating library C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\Debug\VioTOP.lib and object C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\Debug\VioTOP.exp
+  OpenGLTOP.vcxproj -> C:\Users\joseph.wells\Documents\Projects\Misc\touchdesigner\VIO\Debug\VioTOP.dll
