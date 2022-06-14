@@ -3,8 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# Get lib folder
-!/lib/*
+
 
 # User-specific files
 *.rsuser
@@ -399,3 +398,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Get lib folder
+!/lib/
+!/lib/*
+!/lib/**/*
