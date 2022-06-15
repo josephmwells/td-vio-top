@@ -156,7 +156,9 @@ VioTOP::VioTOP(const OP_NodeInfo* info, TOP_Context *context)
 	OpenPara.Mode = VM_ToVentuz;
 	OpenPara.Transfer = VTM_OpenGl;
 	OpenPara.Color = VCP_RGBA_8;
-	OpenPara.Depth = VDP_F32;
+	OpenPara.Depth = VDP_Off;
+	OpenPara.SizeX = 256;
+	OpenPara.SizeY = 256;
 
 	// If you wanted to do other GL initialization inside this constructor, you could
 	// uncomment these lines and do the work between the begin/end
@@ -168,7 +170,9 @@ VioTOP::VioTOP(const OP_NodeInfo* info, TOP_Context *context)
 
 VioTOP::~VioTOP()
 {
-
+	vClose(VioHandle);
+	VioHandle = 0;
+	vExit();
 }
 
 void
@@ -188,7 +192,11 @@ VioTOP::getOutputFormat(TOP_OutputFormat* format, const OP_Inputs *inputs, void*
 	// If we did that, we'd want to return true to tell the TOP to use the settings we've
 	// specified.
 	// In this example we'll return false and use the TOP's settings
-	return false;
+	format->width = 256;
+	format->height = 256;
+	format->aspectX = 1;
+	format->aspectY = 1;
+	return true;
 }
 
 
@@ -227,6 +235,19 @@ VioTOP::execute(TOP_OutputFormatSpecs* outputFormat ,
 
 	if (!myError)
 	{
+		if (!VioHandle)
+		{
+			if (!VERR(vOpen(&OpenPara, &VioHandle)))
+				return;
+		}
+		
+		vFrame frame;
+		vError error = vLockFrame(VioHandle, &frame);
+		if (!VERR(error))
+		{
+			if (error == VE_ConnectionBroken)
+				VioHandle = 0;
+		}
 		glViewport(0, 0, width, height);
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -266,6 +287,8 @@ VioTOP::execute(TOP_OutputFormatSpecs* outputFormat ,
 
 		glBindVertexArray(0);
 		glUseProgram(0);
+
+		VERR(vUnlockFrame(VioHandle));
 	}
 
 	context->endGLCommands();
