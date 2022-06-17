@@ -229,25 +229,33 @@ VioTOP::execute(TOP_OutputFormatSpecs* outputFormat ,
 	Matrix view;
 	view[0] = ratio;
 
-	context->beginGLCommands();
+	//context->getShareRenderContext();
+
+	//context->beginGLCommands();
+
+	if (!VioHandle)
+	{
+		if (!VERR(vOpen(&OpenPara, &VioHandle)))
+			return;
+	}
+
+	vFrame frame;
+	vError error = vLockFrame(VioHandle, &frame);
+	if (!VERR(error))
+	{
+		if (error == VE_ConnectionBroken)
+			VioHandle = 0;
+		return;
+	}
 	
 	setupGL();
 
 	if (!myError)
 	{
-		if (!VioHandle)
-		{
-			if (!VERR(vOpen(&OpenPara, &VioHandle)))
-				return;
-		}
 		
-		vFrame frame;
-		vError error = vLockFrame(VioHandle, &frame);
-		if (!VERR(error))
-		{
-			if (error == VE_ConnectionBroken)
-				VioHandle = 0;
-		}
+
+		
+		
 		glViewport(0, 0, width, height);
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -288,10 +296,10 @@ VioTOP::execute(TOP_OutputFormatSpecs* outputFormat ,
 		glBindVertexArray(0);
 		glUseProgram(0);
 
-		VERR(vUnlockFrame(VioHandle));
+		//VERR(vUnlockFrame(VioHandle));
 	}
 
-	context->endGLCommands();
+	//context->endGLCommands();
 }
 
 int32_t
